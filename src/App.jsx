@@ -305,12 +305,12 @@ function Achievement() {
   
   useEffect(() => {
     const dispararConquista = (evento) => {
-      // Se o gatilho foi o scroll, só dispara se a pessoa rolou mais de 50 pixels para baixo
+   
       if (evento.type === "scroll" && window.scrollY < 50) return;
 
       setShow(true);
       
-      const audio = new Audio(somConquista); // Certifique-se de que a importação está lá no topo
+      const audio = new Audio(somConquista); 
       audio.volume = 1;
       audio.play().catch(erro => console.log("Áudio bloqueado (provavelmente scroll de mouse no PC)", erro));
       
@@ -325,7 +325,7 @@ function Achievement() {
     window.addEventListener("click", dispararConquista);
     window.addEventListener("keydown", dispararConquista);
     window.addEventListener("scroll", dispararConquista);
-    window.addEventListener("touchstart", dispararConquista); // Toque na tela do celular
+    window.addEventListener("touchstart", dispararConquista); 
     
     return () => {
       window.removeEventListener("click", dispararConquista);
