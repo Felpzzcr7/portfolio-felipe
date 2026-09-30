@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   motion, AnimatePresence, useMotionValue, useSpring, useTransform, useScroll,
 } from "framer-motion";
-import { Github, Linkedin, Mail, Download, Trophy, ExternalLink, Send, X } from "lucide-react";
+import { Github, Linkedin, Mail, Download, Trophy, ExternalLink, MessageCircle, X } from "lucide-react";
 import felipe from "./assets/img/felipe.jpg";
 import hackathon from "./assets/img/hackathon.jpg";
 import achei1 from "./assets/img/achei1.jpg";
@@ -10,13 +10,14 @@ import achei2 from "./assets/img/achei2.jpg";
 import achei3 from "./assets/img/achei3.jpg";
 import creperia from "./assets/img/creperia.jpg";
 import bot from "./assets/img/bot.jpg";
+import somConquista from "./assets/audio/conquista.mp3";
 
-/* ===== EDITE AQUI ===== */
 const LINKS = {
-  github: "https://github.com/SEU-USUARIO", // <- troque
+  github: "https://github.com/Felpzzcr7", 
   linkedin: "https://www.linkedin.com/in/felipeleandroc",
   email: "felipinholeandro0@gmail.com",
   cv: "/curriculo.pdf",
+  whatsapp: "https://wa.me/5512988244925"
 };
 const STATS = [["REACT", 82], ["TS", 76], ["JAVA", 70], ["C", 64], ["SQL", 68], ["GIT", 74]];
 const TEAM = [
@@ -148,20 +149,6 @@ function Hero() {
   );
 }
 
-function Marquee() {
-  const words = ["skate", "games", "futebol", "react", "typescript", "java", "hackathon 2026", "ubatuba"];
-  const row = [...words, ...words].map((w, i) => (
-    <span key={i} className="mx-6 font-display text-3xl font-black uppercase text-ink">{w} <span className="text-white/80">✦</span></span>
-  ));
-  return (
-    <div className="-rotate-2 overflow-hidden bg-gradient-to-r from-cyan via-mint to-pink py-3 shadow-[0_0_40px_-8px_#22e4ff]" aria-hidden>
-      <motion.div className="flex w-max whitespace-nowrap" animate={{ x: ["0%", "-50%"] }} transition={{ duration: 24, repeat: Infinity, ease: "linear" }}>
-        <div className="flex">{row}</div><div className="flex">{row}</div>
-      </motion.div>
-    </div>
-  );
-}
-
 function Bag() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-28">
@@ -290,7 +277,7 @@ function Timeline() {
 }
 
 function Contact() {
-  const items = [[Github, "GitHub", LINKS.github], [Linkedin, "LinkedIn", LINKS.linkedin], [Mail, "E-mail", `mailto:${LINKS.email}`], [Send, "Bot no Telegram", "https://t.me/Felpzz_shopee_bot"]];
+  const items = [[Github, "GitHub", LINKS.github], [Linkedin, "LinkedIn", LINKS.linkedin], [Mail, "E-mail", `mailto:${LINKS.email}`], [MessageCircle, "WhatsApp", LINKS.whatsapp]];
   return (
     <footer className="relative overflow-hidden px-6 pb-12 pt-28 text-center">
       <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-vio/25 to-transparent" />
@@ -315,10 +302,39 @@ function Contact() {
 
 function Achievement() {
   const [show, setShow] = useState(false);
+  
   useEffect(() => {
-    const a = setTimeout(() => setShow(true), 2600), b = setTimeout(() => setShow(false), 9500);
-    return () => { clearTimeout(a); clearTimeout(b); };
+    const dispararConquista = (evento) => {
+      // Se o gatilho foi o scroll, só dispara se a pessoa rolou mais de 50 pixels para baixo
+      if (evento.type === "scroll" && window.scrollY < 50) return;
+
+      setShow(true);
+      
+      const audio = new Audio(somConquista); // Certifique-se de que a importação está lá no topo
+      audio.volume = 1;
+      audio.play().catch(erro => console.log("Áudio bloqueado (provavelmente scroll de mouse no PC)", erro));
+      
+
+      window.removeEventListener("click", dispararConquista);
+      window.removeEventListener("keydown", dispararConquista);
+      window.removeEventListener("scroll", dispararConquista);
+      window.removeEventListener("touchstart", dispararConquista);
+    
+    };
+
+    window.addEventListener("click", dispararConquista);
+    window.addEventListener("keydown", dispararConquista);
+    window.addEventListener("scroll", dispararConquista);
+    window.addEventListener("touchstart", dispararConquista); // Toque na tela do celular
+    
+    return () => {
+      window.removeEventListener("click", dispararConquista);
+      window.removeEventListener("keydown", dispararConquista);
+      window.removeEventListener("scroll", dispararConquista);
+      window.removeEventListener("touchstart", dispararConquista);
+    };
   }, []);
+
   return (
     <AnimatePresence>
       {show && (
@@ -329,7 +345,7 @@ function Achievement() {
             <p className="font-pixel text-[8px] text-mint">CONQUISTA DESBLOQUEADA</p>
             <p className="mt-1 text-sm font-bold text-white">3º lugar no Hackathon IFSP 2026</p>
           </div>
-          <button onClick={() => setShow(false)} aria-label="Fechar" className="ml-2 text-slate-400 hover:text-white"><X size={16} /></button>
+          <button onClick={(e) => { e.stopPropagation(); setShow(false); }} aria-label="Fechar" className="ml-2 text-slate-400 hover:text-white"><X size={16} /></button>
         </motion.div>
       )}
     </AnimatePresence>
@@ -340,7 +356,6 @@ export default function App() {
   return (
     <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7 }} className="min-h-screen overflow-x-hidden">
       <Hero />
-      <Marquee />
       <Bag />
       <Projects />
       <Timeline />
