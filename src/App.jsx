@@ -304,34 +304,35 @@ function Achievement() {
   const [show, setShow] = useState(false);
   
   useEffect(() => {
+    const audio = new Audio(somConquista); 
+    audio.preload = "auto";
+    audio.volume = 0.4;
+
     const dispararConquista = (evento) => {
-   
       if (evento.type === "scroll" && window.scrollY < 50) return;
 
       setShow(true);
+  
+      audio.play().catch(erro => console.log("Áudio bloqueado:", erro));
       
-      const audio = new Audio(somConquista); 
-      audio.volume = 1;
-      audio.play().catch(erro => console.log("Áudio bloqueado (provavelmente scroll de mouse no PC)", erro));
-      
-
       window.removeEventListener("click", dispararConquista);
       window.removeEventListener("keydown", dispararConquista);
       window.removeEventListener("scroll", dispararConquista);
-      window.removeEventListener("touchstart", dispararConquista);
-    
+      window.removeEventListener("touchend", dispararConquista);
+      
+      setTimeout(() => setShow(false), 7000);
     };
 
     window.addEventListener("click", dispararConquista);
     window.addEventListener("keydown", dispararConquista);
     window.addEventListener("scroll", dispararConquista);
-    window.addEventListener("touchstart", dispararConquista); 
+    window.addEventListener("touchend", dispararConquista);
     
     return () => {
       window.removeEventListener("click", dispararConquista);
       window.removeEventListener("keydown", dispararConquista);
       window.removeEventListener("scroll", dispararConquista);
-      window.removeEventListener("touchstart", dispararConquista);
+      window.removeEventListener("touchend", dispararConquista);
     };
   }, []);
 
