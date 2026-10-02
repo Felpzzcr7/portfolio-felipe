@@ -11,6 +11,7 @@ import achei3 from "./assets/img/achei3.jpg";
 import creperia from "./assets/img/creperia.jpg";
 import bot from "./assets/img/bot.jpg";
 import somConquista from "./assets/audio/conquista.mp3";
+import Devtrack from "./assets/img/devtrack.jpg"
 
 const LINKS = {
   github: "https://github.com/Felpzzcr7", 
@@ -235,11 +236,7 @@ function Projects() {
       <Featured />
       <div className="mt-6 grid gap-6 md:grid-cols-3">
         <Card color="#8b5cf6" title="DevTrack" desc="Dashboard full-stack com o histórico dos meus estudos: o que estudei, quanto tempo e como evoluí em cada tecnologia." tags={["React", "TypeScript", "SQL"]} href="https://dev-track-one-eta.vercel.app" label="Visitar o site">
-          <div className="flex h-48 items-end gap-2 bg-gradient-to-br from-vio/30 to-transparent p-6">
-            {[35, 60, 45, 80, 55, 95, 70].map((h, i) => (
-              <motion.div key={i} initial={{ height: 0 }} whileInView={{ height: `${h}%` }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.7 }} className="flex-1 rounded-t-md bg-gradient-to-t from-vio to-cyan" />
-            ))}
-          </div>
+          <img src={Devtrack} alt="pagina do app" />
         </Card>
         <Card color="#22e4ff" title="Bot da Shopee" desc="Automação serverless: recebe um link de produto no Telegram e devolve o link de afiliado com a prévia da oferta." tags={["TypeScript", "Vercel", "Serverless"]} href="https://t.me/Felpzz_shopee_bot" label="Abrir @Felpzz_shopee_bot">
           <img src={bot} alt="Conversa com o bot no Telegram" className={img} />
